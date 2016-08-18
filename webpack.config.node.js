@@ -5,6 +5,7 @@
  */
 var webpack = require( 'webpack' ),
 	path = require( 'path' ),
+	HardSourceWebpackPlugin = require('hard-source-webpack-plugin'),
 	fs = require( 'fs' );
 
 /**
@@ -55,6 +56,7 @@ module.exports = {
 		path: path.join( __dirname, 'build' ),
 		filename: 'bundle-' + ( process.env.CALYPSO_ENV || 'development' ) + '.js',
 	},
+	recordsPath: path.join( __dirname, 'server-records.json' ),
 	module: {
 		loaders: [
 			{
@@ -86,6 +88,7 @@ module.exports = {
 		__dirname: true
 	},
 	plugins: [
+		new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, 'server-cache' ) } ),
 		// Require source-map-support at the top, so we get source maps for the bundle
 		new webpack.BannerPlugin( 'require( "source-map-support" ).install();', { raw: true, entryOnly: false } ),
 		new webpack.NormalModuleReplacementPlugin( /^lib\/analytics$/, 'lodash/noop' ), // Depends on BOM

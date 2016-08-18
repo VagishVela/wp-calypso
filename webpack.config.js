@@ -11,7 +11,8 @@ var webpack = require( 'webpack' ),
  */
 var config = require( './server/config' ),
 	sections = require( './client/sections' ),
-	ChunkFileNamePlugin = require( './server/bundler/plugin' );
+	ChunkFileNamePlugin = require( './server/bundler/plugin' ),
+	HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 /**
  * Internal variables
@@ -27,6 +28,7 @@ webpackConfig = {
 	cache: true,
 	entry: {},
 	devtool: '#eval',
+	recordsPath: path.join( __dirname, 'records' ),
 	output: {
 		path: path.join( __dirname, 'public' ),
 		publicPath: '/calypso/',
@@ -116,6 +118,7 @@ jsLoader = {
 
 if ( CALYPSO_ENV === 'development' ) {
 	webpackConfig.plugins.push( new webpack.HotModuleReplacementPlugin() );
+	webpackConfig.plugins.push( new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, 'cache' ) } ) );
 	webpackConfig.entry[ 'build-' + CALYPSO_ENV ] = [
 		'webpack-dev-server/client?/',
 		'webpack/hot/only-dev-server',
