@@ -166,6 +166,7 @@
     "eslint-plugin-react": "6.2.0",
     "eslint-plugin-wpcalypso": "2.0.0",
     "glob": "7.0.3",
+    "hard-source-webpack-plugin": "0.0.18",
     "localStorage": "1.0.2",
     "lodash-deep": "1.5.3",
     "mixedindentlint": "1.1.1",
