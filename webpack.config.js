@@ -28,7 +28,7 @@ webpackConfig = {
 	cache: true,
 	entry: {},
 	devtool: '#eval',
-	recordsPath: path.join( __dirname, 'records' ),
+	recordsPath: path.join( __dirname, '.webpack-cache', 'client-records.json' ),
 	output: {
 		path: path.join( __dirname, 'public' ),
 		publicPath: '/calypso/',
@@ -118,7 +118,7 @@ jsLoader = {
 
 if ( CALYPSO_ENV === 'development' ) {
 	webpackConfig.plugins.push( new webpack.HotModuleReplacementPlugin() );
-	webpackConfig.plugins.push( new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, 'cache' ) } ) );
+	webpackConfig.plugins.push( new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, '.webpack-cache', 'client' ) } ) );
 	webpackConfig.entry[ 'build-' + CALYPSO_ENV ] = [
 		'webpack-dev-server/client?/',
 		'webpack/hot/only-dev-server',
