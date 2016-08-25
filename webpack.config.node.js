@@ -12,6 +12,7 @@ var webpack = require( 'webpack' ),
  * Internal dependencies
  */
 var	PragmaCheckPlugin = require( 'server/pragma-checker' );
+var config = require( 'config' );
 
 /**
  * This lists modules that must use commonJS `require()`s
@@ -48,7 +49,7 @@ function getExternals() {
 	return externals;
 }
 
-module.exports = {
+var webpackConfig = {
 	devtool: 'source-map',
 	entry: 'index.js',
 	target: 'node',
@@ -56,7 +57,6 @@ module.exports = {
 		path: path.join( __dirname, 'build' ),
 		filename: 'bundle-' + ( process.env.CALYPSO_ENV || 'development' ) + '.js',
 	},
-	recordsPath: path.join( __dirname, '.webpack-cache', 'server-records.json' ),
 	module: {
 		loaders: [
 			{
@@ -88,7 +88,6 @@ module.exports = {
 		__dirname: true
 	},
 	plugins: [
-		new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, '.webpack-cache', 'server' ) } ),
 		// Require source-map-support at the top, so we get source maps for the bundle
 		new webpack.BannerPlugin( 'require( "source-map-support" ).install();', { raw: true, entryOnly: false } ),
 		new webpack.NormalModuleReplacementPlugin( /^lib\/analytics$/, 'lodash/noop' ), // Depends on BOM
@@ -107,6 +106,13 @@ module.exports = {
 };
 
 if ( process.env.CALYPSO_ENV === 'development' || process.env.CALYPSO_ENV === 'test' ) {
-	module.exports.plugins.push( new PragmaCheckPlugin );
+	webpackConfig.plugins.push( new PragmaCheckPlugin );
 }
+
+if ( config.isEnabled( 'webpack/persistent-caching' ) ) {
+	webpackConfig.recordsPath = path.join( __dirname, '.webpack-cache', 'server-records.json' ),
+	webpackConfig.plugins.push( new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, '.webpack-cache', 'server' ) } ) );
+}
+
+module.exports = webpackConfig;
 
