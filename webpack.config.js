@@ -151,7 +151,7 @@ if ( CALYPSO_ENV === 'production' ) {
 
 if ( config.isEnabled( 'webpack/persistent-caching' ) ) {
 	webpackConfig.recordsPath = path.join( __dirname, '.webpack-cache', 'client-records.json' ),
-	webpackConfig.plugins.push( new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, '.webpack-cache', 'client' ) } ) );
+	webpackConfig.plugins.unshift( new HardSourceWebpackPlugin( { cacheDirectory: path.join( __dirname, '.webpack-cache', 'client' ) } ) );
 }
 
 webpackConfig.module.loaders = [ jsLoader ].concat( webpackConfig.module.loaders );
