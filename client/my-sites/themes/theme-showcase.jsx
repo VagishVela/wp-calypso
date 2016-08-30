@@ -45,7 +45,7 @@ const optionShape = PropTypes.shape( {
 
 const ThemeShowcase = React.createClass( {
 	propTypes: {
-		tier: PropTypes.oneOf( [ '', 'free', 'premium' ] ).isRequired,
+		tier: PropTypes.oneOf( [ '', 'free', 'premium' ] ),
 		// Connected props
 		options: PropTypes.objectOf( optionShape ),
 		defaultOption: optionShape,
@@ -122,7 +122,7 @@ const ThemeShowcase = React.createClass( {
 		return (
 			<Main className="themes">
 				<DocumentHead title={ themesMeta[ tier ].title } metas={ metas } />
-				<PageViewTracker path={ this.props.analyticsPath } title={ this.props.analyticsPageTitle }/>
+				<PageViewTracker path={ this.props.analyticsPath } title={ this.props.analyticsPageTitle } />
 				{ this.props.children }
 				{ this.state.showPreview &&
 					<ThemePreview showPreview={ this.state.showPreview }
