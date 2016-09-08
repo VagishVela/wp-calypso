@@ -5,6 +5,17 @@
 		overflow: scroll;
 		white-space: nowrap;
 	}
+
+	&.disabled {
+		.title-format-editor__editor-wrapper {
+			border: 1px solid lighten( $gray, 20% );
+			background-color: $gray-light;
+		}
+
+		.title-format-editor__token, .title-format-editor__button {
+			pointer-events: none;
+		}
+	}
 }
 
 .title-format-editor__header {
