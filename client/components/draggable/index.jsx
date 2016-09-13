@@ -63,7 +63,7 @@ export default React.createClass( {
 		let coords = event;
 
 		if ( this.isTouchEvent( event ) ) {
-			coords = event.targetTouches[ 0 ];
+			coords = event.touches[ 0 ];
 		}
 
 		this.relativePos = {
@@ -85,8 +85,10 @@ export default React.createClass( {
 	dragging( event ) {
 		let coords = event;
 
+		console.log('on dragging');
+
 		if ( this.isTouchEvent( event ) ) {
-			coords = event.targetTouches[ 0 ];
+			coords = event.touches[ 0 ];
 		}
 
 		const x = coords.pageX - this.relativePos.x,
@@ -98,6 +100,8 @@ export default React.createClass( {
 	draggingEnded( ) {
 		this.dragging = false;
 		this.mousePos = null;
+
+		console.log('on dragging end');
 
 		cancelAnimationFrame( this.frameRequestId );
 
@@ -155,8 +159,11 @@ export default React.createClass( {
 	},
 
 	removeListeners() {
-		document.removeEventListener( 'mousemove', this.onMouseMove );
-		document.removeEventListener( 'mouseup', this.onMouseUp );
+		document.removeEventListener( 'mousemove', this.dragging );
+		document.removeEventListener( 'mouseup', this.draggingEnded );
+
+		document.removeEventListener( 'touchmove', this.dragging );
+		document.removeEventListener( 'touchend', this.draggingEnded );
 	},
 
 	render() {
