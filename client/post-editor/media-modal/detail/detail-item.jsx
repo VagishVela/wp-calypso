@@ -48,6 +48,7 @@ module.exports = React.createClass( {
 	},
 
 	isMobileTouchDevice() {
+		return false;
 		return ! isDesktop() || hasTouch();
 	},
 
