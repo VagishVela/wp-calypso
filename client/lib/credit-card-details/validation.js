@@ -148,7 +148,9 @@ function getCreditCardType( number ) {
 			return 'amex';
 		} else if ( number.match( /^4\d{0,12}$/ ) || number.match( /^4\d{15}$/ ) ) {
 			return 'visa';
-		} else if ( number.match( /^5[1-5]\d{0,14}$/ ) ) {
+		} else if ( number.match( /^5[1-5]\d{0,14}|^2(?:2(?:2[1-9]|[3-9]\d)|[3-6]\d\d|7(?:[01]\d|20))\d{0,12}$/ ) ) {
+			//valid 2-series range: 2221 - 2720
+			//valid 5-series range: 51 - 55
 			return 'mastercard';
 		} else if (
 			number.match( /^6011\d{0,12}$/ ) ||
