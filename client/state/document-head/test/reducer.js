@@ -12,6 +12,7 @@ import {
 	DOCUMENT_HEAD_META_ADD,
 	DOCUMENT_HEAD_TITLE_SET,
 	DOCUMENT_HEAD_UNREAD_COUNT_SET,
+	ROUTE_SET
 } from 'state/action-types';
 
 import {
@@ -34,6 +35,13 @@ describe( 'reducer', () => {
 
 			expect( newState ).to.equal( 'new title' );
 		} );
+
+		it( 'should return initial state on route set action', () => {
+			const original = 'new title';
+			const state = title( original, { type: ROUTE_SET } );
+
+			expect( state ).to.equal( '' );
+		} );
 	} );
 
 	describe( '#unreadCount()', () => {
@@ -47,6 +55,13 @@ describe( 'reducer', () => {
 			const newState = unreadCount( undefined, { type: DOCUMENT_HEAD_UNREAD_COUNT_SET, count: 123 } );
 
 			expect( newState ).to.equal( 123 );
+		} );
+
+		it( 'should return initial state on route set action', () => {
+			const original = 123;
+			const state = unreadCount( original, { type: ROUTE_SET } );
+
+			expect( state ).to.equal( 0 );
 		} );
 	} );
 
@@ -74,6 +89,13 @@ describe( 'reducer', () => {
 
 			expect( newState ).to.eql( expectedState );
 		} );
+
+		it( 'should return initial state on route set action', () => {
+			const original = deepFreeze( [ { content: 'some content', type: 'some type' } ] );
+			const state = meta( original, { type: ROUTE_SET } );
+
+			expect( state ).to.eql( [] );
+		} );
 	} );
 
 	describe( '#link()', () => {
@@ -99,6 +121,13 @@ describe( 'reducer', () => {
 			];
 
 			expect( newState ).to.eql( expectedState );
+		} );
+
+		it( 'should return initial state on route set action', () => {
+			const original = deepFreeze( [ { rel: 'some-rel', href: 'https://wordpress.org' } ] );
+			const state = link( original, { type: ROUTE_SET } );
+
+			expect( state ).to.eql( [] );
 		} );
 	} );
 } );
