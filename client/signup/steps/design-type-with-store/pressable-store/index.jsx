@@ -37,6 +37,10 @@ class PressableStoreStep extends Component {
 		};
 	}
 
+	componentDidMount() {
+		this.props.setRef( this );
+	}
+
 	focus = () => {
 		if ( this._input ) {
 			this._input.focus();
@@ -121,7 +125,8 @@ class PressableStoreStep extends Component {
 }
 
 PressableStoreStep.propTypes = {
-	onBackClick: PropTypes.func.isRequired
+	onBackClick: PropTypes.func.isRequired,
+	setRef: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => ( {
