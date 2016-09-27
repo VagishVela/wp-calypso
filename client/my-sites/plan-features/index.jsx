@@ -15,10 +15,10 @@ import PlanFeaturesHeader from './header';
 import PlanFeaturesItem from './item';
 import Popover from 'components/popover';
 import PlanFeaturesActions from './actions';
-import { isCurrentPlanPaid, isCurrentSitePlan, getSitePlan } from 'state/sites/selectors';
+import { isCurrentPlanPaid, isCurrentSitePlan, getSitePlan, getSiteSlug } from 'state/sites/selectors';
 import { getPlansBySiteId } from 'state/sites/plans/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
-import { getCurrentUserCurrencyCode } from 'state/current-user/selectors';
+import { getCurrentUserCurrencyCode, getCurrentUserId } from 'state/current-user/selectors';
 import { getPlanDiscountedRawPrice } from 'state/sites/plans/selectors';
 import {
 	getPlanRawPrice,
@@ -37,7 +37,6 @@ import {
 	PLAN_BUSINESS
 } from 'lib/plans/constants';
 import { isFreePlan } from 'lib/plans';
-import { getSiteSlug } from 'state/sites/selectors';
 import {
 	getPlanPath,
 	canUpgradeToPlan,
@@ -459,20 +458,24 @@ PlanFeatures.defaultProps = {
 export default connect(
 	( state, ownProps ) => {
 		const { isInSignup, placeholder, plans, onUpgradeClick } = ownProps;
+		const selectedSiteId = isInSignup ? null : getSelectedSiteId( state );
+		const sitePlan = selectedSiteId && getSitePlan( state, selectedSiteId );
+		const hasSitePlanOwner = sitePlan && sitePlan.owner_id > 0;
+		const isSitePlanOwner = hasSitePlanOwner && sitePlan.owner_id === getCurrentUserId( state );
 		let isPlaceholder = placeholder;
+
 		const planProperties = map( plans, ( plan ) => {
 			const planConstantObj = applyTestFiltersToPlansList( plan );
 			const planProductId = planConstantObj.getProductId();
-			const selectedSiteId = isInSignup ? null : getSelectedSiteId( state );
 			const planObject = getPlan( state, planProductId );
 			const isPaid = isCurrentPlanPaid( state, selectedSiteId );
 			const sitePlans = getPlansBySiteId( state, selectedSiteId );
 			const isLoadingSitePlans = ! isInSignup && ! sitePlans.hasLoadedFromServer;
 			const showMonthly = ! isMonthly( plan );
-			const available = isInSignup ? true : canUpgradeToPlan( plan );
+			const available = isInSignup ? true : canUpgradeToPlan( plan ) && ( ! hasSitePlanOwner || isSitePlanOwner );
 			const relatedMonthlyPlan = showMonthly ? getPlanBySlug( state, getMonthlyPlanByYearly( plan ) ) : null;
 			const popular = isPopular( plan ) && ! isPaid;
-			const currentPlan = getSitePlan( state, selectedSiteId ) && getSitePlan( state, selectedSiteId ).product_slug;
+			const currentPlan = sitePlan && sitePlan.product_slug;
 
 			if ( placeholder || ! planObject || isLoadingSitePlans ) {
 				isPlaceholder = true;
