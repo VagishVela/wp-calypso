@@ -1,6 +1,5 @@
 
 const boolType = { type: 'boolean' };
-const stringType = { type: 'string' };
 const numberType = { type: 'number' };
 
 export const settingsSchema = {
@@ -24,7 +23,7 @@ export const systemSchema = {
 		wpcomSubscription: {
 			type: 'object',
 			properties: {
-				ID: stringType,
+				ID: numberType,
 				settings: {
 					type: 'object',
 					additionalProperties: true
