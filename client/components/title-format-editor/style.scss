@@ -12,7 +12,13 @@
 			background-color: $gray-light;
 		}
 
-		.title-format-editor__token, .title-format-editor__button {
+		.title-format-editor__token {
+			background-color: darken( $gray-light, 30% );
+			color: $gray-light;
+			pointer-events: none;
+		}
+
+		.title-format-editor__button {
 			pointer-events: none;
 		}
 	}
